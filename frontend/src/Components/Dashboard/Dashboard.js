@@ -163,8 +163,7 @@ import axios from 'axios';
 import History from '../../History/History';
 import Chart from '../Chart/Chart';
 import Navigation from '../Navigation/Navigation'; // Import navigation here
-
-const BASE_URL = "http://localhost:5000/api/transactions";
+import { API_ENDPOINTS } from '../../config/api';
 
 function Dashboard() {
     const [incomes, setIncomes] = useState([]);
@@ -176,10 +175,10 @@ function Dashboard() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const incomeRes = await axios.get(`${BASE_URL}/get-incomes`, {
+                const incomeRes = await axios.get(API_ENDPOINTS.TRANSACTIONS.GET_INCOMES, {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
-                const expenseRes = await axios.get(`${BASE_URL}/get-expenses`, {
+                const expenseRes = await axios.get(API_ENDPOINTS.TRANSACTIONS.GET_EXPENSES, {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
                 setIncomes(incomeRes.data);

@@ -296,8 +296,7 @@ import Navigation from '../Navigation/Navigation';
 import Form from '../Form/Form';
 import IncomeItem from '../IncomeItem/IncomeItem';
 import { useNavigate } from 'react-router-dom';
-
-const BASE_URL = "http://localhost:5000/api/transactions";
+import { API_ENDPOINTS } from '../../config/api';
 
 function Income() {
   const [incomes, setIncomes] = useState([]);
@@ -312,7 +311,7 @@ function Income() {
 
   const fetchIncomes = async () => {
     try {
-      const response = await axios.get(`${BASE_URL}/get-incomes`, {
+      const response = await axios.get(API_ENDPOINTS.TRANSACTIONS.GET_INCOMES, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setIncomes(response.data);
@@ -324,14 +323,14 @@ function Income() {
   };
 
   const addIncome = async (incomeData) => {
-    await axios.post(`${BASE_URL}/add-income`, incomeData, {
+    await axios.post(API_ENDPOINTS.TRANSACTIONS.ADD_INCOME, incomeData, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
     fetchIncomes();
   };
 
   const updateIncome = async (id, incomeData) => {
-    await axios.put(`${BASE_URL}/update-income/${id}`, incomeData, {
+    await axios.put(API_ENDPOINTS.TRANSACTIONS.UPDATE_INCOME(id), incomeData, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
     fetchIncomes();
@@ -339,7 +338,7 @@ function Income() {
   };
 
   const deleteIncome = async (id) => {
-    await axios.delete(`${BASE_URL}/delete-income/${id}`, {
+    await axios.delete(API_ENDPOINTS.TRANSACTIONS.DELETE_INCOME(id), {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
     setIncomes(incomes.filter(income => income._id !== id));

@@ -178,8 +178,7 @@ import ExpenseForm from './ExpenseForm';
 import Navigation from '../Navigation/Navigation';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
-const BASE_URL = "http://localhost:5000/api/transactions";
+import { API_ENDPOINTS } from '../../config/api';
 
 function Expenses() {
     const [expenses, setExpenses] = useState([]);
@@ -194,7 +193,7 @@ function Expenses() {
 
     const getExpenses = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/get-expenses`, {
+            const res = await axios.get(API_ENDPOINTS.TRANSACTIONS.GET_EXPENSES, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             });
 
@@ -212,7 +211,7 @@ function Expenses() {
 
     const deleteExpense = async (id) => {
         try {
-            await axios.delete(`${BASE_URL}/delete-expense/${id}`, {
+            await axios.delete(API_ENDPOINTS.TRANSACTIONS.DELETE_EXPENSE(id), {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             });
             setExpenses(expenses.filter(exp => exp._id !== id));

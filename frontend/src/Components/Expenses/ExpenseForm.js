@@ -226,8 +226,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Button from '../Button/Button';
 import { plus } from '../../utils/Icons';
 import axios from 'axios';
-
-const BASE_URL = "http://localhost:5000/api/transactions";
+import { API_ENDPOINTS } from '../../config/api';
 
 function ExpenseForm({ refreshExpenses, editItem, clearEdit }) {
     const [inputState, setInputState] = useState({
@@ -285,13 +284,13 @@ function ExpenseForm({ refreshExpenses, editItem, clearEdit }) {
             if (editItem && (editItem._id || editItem.id)) {
                 // Edit mode: Update the existing expense
                 const targetId = editItem._id || editItem.id;
-                await axios.put(`${BASE_URL}/update-expense/${targetId}`, expenseData, {
+                await axios.put(API_ENDPOINTS.TRANSACTIONS.UPDATE_EXPENSE(targetId), expenseData, {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
                 });
                 clearEdit(); // Clear the form after updating
             } else {
                 // Add mode: Create a new expense
-                await axios.post(`${BASE_URL}/add-expense`, expenseData, {
+                await axios.post(API_ENDPOINTS.TRANSACTIONS.ADD_EXPENSE, expenseData, {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
                 });
             }

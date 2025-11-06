@@ -71,8 +71,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import axios from 'axios';
 import Navigation from '../Navigation/Navigation';
-
-const BASE_URL = 'http://localhost:5000/api/transactions'; // Adjust your base URL here
+import { API_ENDPOINTS } from '../../config/api';
 
 const ReportGenerator = () => {
   const [incomes, setIncomes] = useState([]);
@@ -82,10 +81,10 @@ const ReportGenerator = () => {
   // Fetch data from the API
   const fetchData = async () => {
     try {
-      const incomeRes = await axios.get(`${BASE_URL}/get-incomes`, {
+      const incomeRes = await axios.get(API_ENDPOINTS.TRANSACTIONS.GET_INCOMES, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
-      const expenseRes = await axios.get(`${BASE_URL}/get-expenses`, {
+      const expenseRes = await axios.get(API_ENDPOINTS.TRANSACTIONS.GET_EXPENSES, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setIncomes(incomeRes.data);

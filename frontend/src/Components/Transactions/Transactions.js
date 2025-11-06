@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import Navigation from '../Navigation/Navigation';
 import { useNavigate } from 'react-router-dom';
-
-const BASE_URL = "http://localhost:5000/api/transactions";
+import { API_ENDPOINTS } from '../../config/api';
 
 function Transactions() {
   const [active, setActive] = useState(1);
@@ -20,8 +19,8 @@ function Transactions() {
     const fetchAll = async () => {
       try {
         const [incRes, expRes] = await Promise.all([
-          axios.get(`${BASE_URL}/get-incomes`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }),
-          axios.get(`${BASE_URL}/get-expenses`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+          axios.get(API_ENDPOINTS.TRANSACTIONS.GET_INCOMES, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }),
+          axios.get(API_ENDPOINTS.TRANSACTIONS.GET_EXPENSES, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
         ]);
         setIncomes(incRes.data || []);
         setExpenses(expRes.data || []);
