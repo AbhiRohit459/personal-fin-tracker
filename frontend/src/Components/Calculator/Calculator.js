@@ -61,13 +61,6 @@ const styles = {
     overflow: 'hidden',
     background: 'linear-gradient(to right, #667eea, #764ba2)',
   },
-  navContainer: {
-    width: '250px',
-    backgroundColor: '#fff',
-    height: '100vh',
-    overflowY: 'auto',
-    borderRight: '1px solid #e0e0e0',
-  },
   calculatorWrapper: {
     flex: 1,
     display: 'flex',
