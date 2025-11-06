@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
 const { db } = require('./db/db');
 require('dotenv').config();
 
@@ -11,11 +12,30 @@ app.use(cors());
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-    res.status(200).json({ 
-        status: 'OK', 
+    const dbStatus = mongoose.connection.readyState;
+    const dbStatusText = {
+        0: 'disconnected',
+        1: 'connected',
+        2: 'connecting',
+        3: 'disconnecting'
+    }[dbStatus] || 'unknown';
+    
+    const health = {
+        status: dbStatus === 1 ? 'OK' : 'WARNING',
         message: 'Server is running',
-        timestamp: new Date().toISOString()
-    });
+        timestamp: new Date().toISOString(),
+        database: {
+            status: dbStatusText,
+            connected: dbStatus === 1
+        },
+        environment: {
+            hasMongoUrl: !!process.env.MONGO_URL,
+            hasJwtSecret: !!process.env.JWT_SECRET,
+            nodeEnv: process.env.NODE_ENV || 'not set'
+        }
+    };
+    
+    res.status(dbStatus === 1 ? 200 : 503).json(health);
 });
 
 // Routes

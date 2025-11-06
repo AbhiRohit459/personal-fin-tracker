@@ -82,6 +82,7 @@
 // };
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const User = require('../models/User');  // Adjust the path if needed
 
 // Register a new user
@@ -95,7 +96,13 @@ exports.register = async (req, res) => {
 
     if (!process.env.JWT_SECRET) {
         console.error('JWT_SECRET is not set in environment variables');
-        return res.status(500).json({ message: 'Server configuration error' });
+        return res.status(500).json({ message: 'Server configuration error: JWT_SECRET missing' });
+    }
+
+    // Check if database is connected
+    if (mongoose.connection.readyState !== 1) {
+        console.error('Database is not connected. ReadyState:', mongoose.connection.readyState);
+        return res.status(500).json({ message: 'Database connection error. Please check MONGO_URL.' });
     }
 
     try {
@@ -132,9 +139,10 @@ exports.register = async (req, res) => {
         });
     } catch (error) {
         console.error('Register error:', error);
+        console.error('Error stack:', error.stack);
         res.status(500).json({ 
             message: 'Server Error',
-            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error. Check server logs.'
         });
     }
 };
@@ -150,7 +158,13 @@ exports.login = async (req, res) => {
 
     if (!process.env.JWT_SECRET) {
         console.error('JWT_SECRET is not set in environment variables');
-        return res.status(500).json({ message: 'Server configuration error' });
+        return res.status(500).json({ message: 'Server configuration error: JWT_SECRET missing' });
+    }
+
+    // Check if database is connected
+    if (mongoose.connection.readyState !== 1) {
+        console.error('Database is not connected. ReadyState:', mongoose.connection.readyState);
+        return res.status(500).json({ message: 'Database connection error. Please check MONGO_URL.' });
     }
 
     try {
@@ -182,9 +196,10 @@ exports.login = async (req, res) => {
         });
     } catch (error) {
         console.error('Login error:', error);
+        console.error('Error stack:', error.stack);
         res.status(500).json({ 
             message: 'Server Error',
-            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error. Check server logs.'
         });
     }
 };
