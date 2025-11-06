@@ -71,7 +71,14 @@ const Signup = () => {
         body: JSON.stringify(form),
       });
 
-      const data = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch (parseError) {
+        console.error('Failed to parse response:', parseError);
+        alert(`Server error (${res.status}). Please check the backend logs.`);
+        return;
+      }
 
       if (res.ok) {
         if (data.token) {
@@ -81,11 +88,14 @@ const Signup = () => {
         alert('Signup successful! Redirecting to login...');
         navigate('/login');
       } else {
-        alert(data.message || 'Signup failed. Please check your information.');
+        // Show the actual error message from backend
+        const errorMsg = data.message || data.error || `Server error (${res.status})`;
+        console.error('Signup failed:', errorMsg, data);
+        alert(`Signup failed: ${errorMsg}`);
       }
     } catch (error) {
       console.error('Signup error:', error);
-      alert('Network error! Please check if the backend is running and try again.');
+      alert(`Network error: ${error.message}. Please check if the backend is running.`);
     }
   };
 

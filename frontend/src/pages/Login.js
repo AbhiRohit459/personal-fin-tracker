@@ -21,7 +21,14 @@ const Login = ({ setIsLoggedIn }) => {
         body: JSON.stringify(form),
       });
 
-      const data = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch (parseError) {
+        console.error('Failed to parse response:', parseError);
+        alert(`Server error (${res.status}). Please check the backend logs.`);
+        return;
+      }
 
       if (res.ok) {
         localStorage.setItem('token', data.token);
@@ -34,11 +41,14 @@ const Login = ({ setIsLoggedIn }) => {
         }
         navigate('/app');
       } else {
-        alert(data.message || 'Login failed. Please check your credentials.');
+        // Show the actual error message from backend
+        const errorMsg = data.message || data.error || `Server error (${res.status})`;
+        console.error('Login failed:', errorMsg, data);
+        alert(`Login failed: ${errorMsg}`);
       }
     } catch (error) {
       console.error('Login error:', error);
-      alert('Network error! Please check if the backend is running and try again.');
+      alert(`Network error: ${error.message}. Please check if the backend is running.`);
     }
   };
 
