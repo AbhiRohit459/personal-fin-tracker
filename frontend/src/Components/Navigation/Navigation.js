@@ -148,7 +148,14 @@ function Navigation({ active, setActive }) {
                         key={item.id}
                         onClick={() => {
                             setActive(item.id);
-                            navigate(item.link);
+                            // Only navigate if we're not already on /app route
+                            // When on /app, just update active state to change content
+                            if (window.location.hash !== '#/app') {
+                                navigate(item.link);
+                            } else {
+                                // If on /app, navigate to /app to refresh and show correct content
+                                navigate('/app');
+                            }
                         }}
                         className={active === item.id ? 'active' : ''}
                     >

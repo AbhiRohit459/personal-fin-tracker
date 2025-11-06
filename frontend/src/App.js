@@ -203,7 +203,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 
 function App() {
-  const [active, setActive] = useState(1); // Default to show login page
+  const [active, setActive] = useState(1); // Default to Dashboard (id: 1)
   const [isLoggedIn, setIsLoggedIn] = useState(false); // To track if the user is logged in
   const navigate = useNavigate();
 
@@ -212,6 +212,7 @@ function App() {
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true); // User is logged in
+      setActive(1); // Set to Dashboard when logged in
     }
   }, []);
 
@@ -219,6 +220,7 @@ function App() {
   const handleLogin = (loginSuccess) => {
     if (loginSuccess) {
       setIsLoggedIn(true); // Set logged in status
+      setActive(1); // Set to Dashboard
       navigate('/app'); // Redirect to dashboard
     }
   };
@@ -228,13 +230,13 @@ function App() {
   const displayData = () => {
     switch (active) {
       case 1:
-        return <Login setIsLoggedIn={handleLogin} />;
+        return <Dashboard />; // Dashboard
       case 2:
-        return <Dashboard />;
+        return <Transactions />; // Transactions
       case 3:
-        return <Income />;
+        return <Income />; // Incomes
       case 4:
-        return <Expenses />;
+        return <Expenses />; // Expenses
       default:
         return <Dashboard />;
     }
