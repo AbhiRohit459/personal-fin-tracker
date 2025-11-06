@@ -25,9 +25,6 @@ const Calculator = () => {
 
   return (
     <div style={styles.pageWrapper}>
-      <div style={styles.navContainer}>
-        <Navigation active={active} setActive={setActive} />
-      </div>
       <div style={styles.calculatorWrapper}>
         <button style={styles.backButton} onClick={() => navigate('/dashboard')}>
           ⬅ Back

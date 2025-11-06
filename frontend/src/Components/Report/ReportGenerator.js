@@ -70,7 +70,6 @@ import React, { useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import axios from 'axios';
-import Navigation from '../Navigation/Navigation';
 import { API_ENDPOINTS } from '../../config/api';
 
 const ReportGenerator = () => {
@@ -142,9 +141,6 @@ const ReportGenerator = () => {
 
   return (
     <div style={styles.pageContainer}>
-      <div style={styles.navContainer}>
-        <Navigation active={active} setActive={setActive} />
-      </div>
       <div style={styles.contentContainer}>
         <h1 style={styles.heading}>Income and Expense Report</h1>
         <button onClick={generatePDF} style={styles.downloadButton}>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';  // Import useNavigate for routing
-import Navigation from '../Navigation/Navigation'; // Assuming this is your navigation component
 
 const API_KEY = 'fLcjLx55MrFpq6sMU2AneElyk1oRwWAdhrh5OmVT'; // Replace with your key
 const MARKET_NEWS_URL = `https://api.marketaux.com/v1/news/all?api_token=${API_KEY}&language=en&filter_entities=true&limit=10`;
@@ -26,9 +25,6 @@ const StockNews = () => {
 
   return (
     <PageWrapper>
-      <NavigationWrapper>
-        <Navigation active={active} setActive={setActive} />
-      </NavigationWrapper>
       <NewsSection>
         <BackButton onClick={() => navigate('/dashboard')}>⬅ Back</BackButton> {/* Back button */}
         <h2>📈 Latest Stock News</h2>
@@ -52,25 +48,9 @@ const PageWrapper = styled.div`
   background: #f4f4f9;
 `;
 
-const NavigationWrapper = styled.div`
-  width: 250px;  /* Adjusted to the 250px width */
-  background-color: #2c3e50;
-  padding: 20px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  color: white;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-`;
-
 const NewsSection = styled.div`
-  margin-left: 250px;  /* Adjusted to the new width of navigation */
+  width: 100%;
   padding: 2rem;
-  width: calc(100% - 250px);  /* Adjusted to match the width of navigation */
   position: relative;
 `;
 
