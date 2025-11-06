@@ -157,15 +157,6 @@ const styles = {
     height: '100vh',
     backgroundColor: '#f0f0f0',
   },
-  navContainer: {
-    width: '250px',
-    backgroundColor: '#2c3e50',
-    padding: '20px',
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    height: '100vh',
-  },
   contentContainer: {
     flex: 1,
     display: 'flex',
