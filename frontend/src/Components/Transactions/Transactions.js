@@ -1,12 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import Navigation from '../Navigation/Navigation';
 import { useNavigate } from 'react-router-dom';
 import { API_ENDPOINTS } from '../../config/api';
 
 function Transactions() {
-  const [active, setActive] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [incomes, setIncomes] = useState([]);
@@ -68,9 +66,6 @@ function Transactions() {
 
   return (
     <Page>
-      <nav className="nav-container">
-        <Navigation active={active} setActive={setActive} />
-      </nav>
       <Content>
         <div className="header">
           <div>
@@ -129,16 +124,9 @@ function Transactions() {
 
 const Page = styled.div`
   display: flex;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
-  
-  .nav-container {
-    width: 250px;
-    background-color: #fff;
-    border-right: 1px solid #e0e0e0;
-    height: 100vh;
-    overflow-y: auto;
-  }
 `;
 
 const Content = styled.div`

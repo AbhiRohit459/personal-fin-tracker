@@ -3,8 +3,7 @@
 // import { InnerLayout } from '../../styles/Layouts';
 // import IncomeItem from '../IncomeItem/IncomeItem';
 // import ExpenseForm from './ExpenseForm';
-// import Navigation from '../Navigation/Navigation';
-// import { useNavigate } from 'react-router-dom';
+// // import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 
 // const BASE_URL = "http://localhost:5000/api/transactions";
@@ -175,7 +174,6 @@ import styled from 'styled-components';
 import { InnerLayout } from '../../styles/Layouts';
 import IncomeItem from '../IncomeItem/IncomeItem';
 import ExpenseForm from './ExpenseForm';
-import Navigation from '../Navigation/Navigation';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_ENDPOINTS } from '../../config/api';
@@ -237,9 +235,6 @@ function Expenses() {
 
     return (
         <PageWrapper>
-            <nav className="nav-container">
-                <Navigation active={active} setActive={setActive} />
-            </nav>
             <ContentWrapper>
                 <InnerLayout>
                     <div className="header">
@@ -291,16 +286,9 @@ function Expenses() {
 
 const PageWrapper = styled.div`
   display: flex;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
-  
-  .nav-container {
-    width: 250px;
-    background-color: #fff;
-    border-right: 1px solid #e0e0e0;
-    height: 100vh;
-    overflow-y: auto;
-  }
 `;
 
 const ContentWrapper = styled.div`
