@@ -149,13 +149,10 @@ function Navigation({ active, setActive }) {
                         key={item.id}
                         onClick={() => {
                             setActive(item.id);
-                            // If we're on /app route, just update active state (content changes via displayData)
-                            // Otherwise, navigate to the specific route
-                            if (location.pathname === '/app' || location.hash === '#/app') {
-                                // Stay on /app, just update active state
-                                // The displayData function will show the correct component
-                            } else {
-                                navigate(item.link);
+                            // Always stay on /app route, just update active state
+                            // The displayData function in App.js will show the correct component
+                            if (location.pathname !== '/app' && location.hash !== '#/app') {
+                                navigate('/app');
                             }
                         }}
                         className={active === item.id ? 'active' : ''}

@@ -162,7 +162,6 @@ import styled from 'styled-components';
 import axios from 'axios';
 import History from '../../History/History';
 import Chart from '../Chart/Chart';
-import Navigation from '../Navigation/Navigation'; // Import navigation here
 import { API_ENDPOINTS } from '../../config/api';
 
 function Dashboard() {
@@ -170,7 +169,6 @@ function Dashboard() {
     const [expenses, setExpenses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [active, setActive] = useState(1); // for navigation highlighting
 
     useEffect(() => {
         const fetchData = async () => {
@@ -202,7 +200,6 @@ function Dashboard() {
 
     return (
         <DashboardLayout>
-            <Navigation active={active} setActive={setActive} />
             <div className="dashboard-content">
                 <div className="hero">
                     <div className="hero-text">
@@ -250,13 +247,14 @@ function Dashboard() {
 const DashboardLayout = styled.div`
     display: flex;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
 
     .dashboard-content {
         flex: 1;
         padding: 2rem;
         overflow-y: auto;
+        width: 100%;
     }
 
     .hero {

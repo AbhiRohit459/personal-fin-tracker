@@ -237,9 +237,23 @@ function App() {
         return <Income />; // Incomes
       case 4:
         return <Expenses />; // Expenses
+      case 5:
+        return <Calculator />; // Calculator
+      case 6:
+        return <ReportGenerator />; // Report
+      case 7:
+        return <StockNews />; // Stock news
       default:
         return <Dashboard />;
     }
+  };
+
+  // Protected route wrapper
+  const ProtectedRoute = ({ children }) => {
+    if (!isLoggedIn) {
+      return <Navigate to="/login" />;
+    }
+    return children;
   };
 
   return (
@@ -248,34 +262,31 @@ function App() {
           <Route path="/" element={<Navigate to="/signup" />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login setIsLoggedIn={handleLogin} />} />
-          <Route path="/navbar" element={<Navigation />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/chart" element={<Chart />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/incomes" element={<Income />} />
-          <Route path="/expenses" element={<Expenses />} />
-          <Route path="/calculator" element={<Calculator />} />
-          <Route path="/report" element={<ReportGenerator />} />
-          <Route path="/stock" element={<StockNews />} />
-          <Route path="/incomeItem" element={<IncomeItem />} />
-          {/* <Route path="/icons" element={<Icons />} /> */}
           
-          {/* Main App Routes (Dashboard UI) */}
+          {/* Main App Route - Single entry point with Navigation */}
           <Route
             path="/app"
-            element={isLoggedIn ? (
-              <AppStyled bg={bg} className="App">
-                {orbMemo}
-                <MainLayout>
-                  <Navigation active={active} setActive={setActive} />
-                  <main>{displayData()}</main>
-                </MainLayout>
-              </AppStyled>
-            ) : (
-              <Navigate to="/login" />
-            )}
+            element={
+              <ProtectedRoute>
+                <AppStyled bg={bg} className="App">
+                  {orbMemo}
+                  <MainLayout>
+                    <Navigation active={active} setActive={setActive} />
+                    <main>{displayData()}</main>
+                  </MainLayout>
+                </AppStyled>
+              </ProtectedRoute>
+            }
           />
+          
+          {/* Redirect all other routes to /app */}
+          <Route path="/dashboard" element={<Navigate to="/app" replace />} />
+          <Route path="/transactions" element={<Navigate to="/app" replace />} />
+          <Route path="/incomes" element={<Navigate to="/app" replace />} />
+          <Route path="/expenses" element={<Navigate to="/app" replace />} />
+          <Route path="/calculator" element={<Navigate to="/app" replace />} />
+          <Route path="/report" element={<Navigate to="/app" replace />} />
+          <Route path="/stock" element={<Navigate to="/app" replace />} />
         </Routes>
   );
 }
