@@ -88,6 +88,16 @@ const User = require('../models/User');  // Adjust the path if needed
 exports.register = async (req, res) => {
     const { name, email, password } = req.body;
 
+    // Validate input
+    if (!name || !email || !password) {
+        return res.status(400).json({ message: 'Please provide name, email, and password' });
+    }
+
+    if (!process.env.JWT_SECRET) {
+        console.error('JWT_SECRET is not set in environment variables');
+        return res.status(500).json({ message: 'Server configuration error' });
+    }
+
     try {
         // Check if the user already exists
         const userExists = await User.findOne({ email });
@@ -108,16 +118,40 @@ exports.register = async (req, res) => {
         // Save the user to the database
         await newUser.save();
 
-        res.status(201).json({ message: 'User registered successfully' });
+        // Create a JWT token for the new user
+        const token = jwt.sign(
+            { userId: newUser._id, email: newUser.email },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        res.status(201).json({ 
+            message: 'User registered successfully',
+            token,
+            userName: newUser.name
+        });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server Error' });
+        console.error('Register error:', error);
+        res.status(500).json({ 
+            message: 'Server Error',
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
     }
 };
 
 // Login a user
 exports.login = async (req, res) => {
     const { email, password } = req.body;
+
+    // Validate input
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Please provide email and password' });
+    }
+
+    if (!process.env.JWT_SECRET) {
+        console.error('JWT_SECRET is not set in environment variables');
+        return res.status(500).json({ message: 'Server configuration error' });
+    }
 
     try {
         // Find the user by email
@@ -147,8 +181,11 @@ exports.login = async (req, res) => {
             userRole: user.role    // Send the user's role if needed
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server Error' });
+        console.error('Login error:', error);
+        res.status(500).json({ 
+            message: 'Server Error',
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
     }
 };
 

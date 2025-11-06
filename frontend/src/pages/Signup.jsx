@@ -74,15 +74,18 @@ const Signup = () => {
       const data = await res.json();
 
       if (res.ok) {
-        localStorage.setItem('token', data.token);
-        alert('Signup successful!');
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('userName', data.userName || 'User');
+        }
+        alert('Signup successful! Redirecting to login...');
         navigate('/login');
       } else {
-        alert(data.message || 'Signup failed');
+        alert(data.message || 'Signup failed. Please check your information.');
       }
     } catch (error) {
       console.error('Signup error:', error);
-      alert('Something went wrong!');
+      alert('Network error! Please check if the backend is running and try again.');
     }
   };
 
@@ -99,6 +102,7 @@ const Signup = () => {
             value={form.name}
             onChange={handleChange}
             required
+            autoComplete="name"
             style={styles.input}
           />
           <input
@@ -108,6 +112,7 @@ const Signup = () => {
             value={form.email}
             onChange={handleChange}
             required
+            autoComplete="email"
             style={styles.input}
           />
           <input
@@ -117,6 +122,7 @@ const Signup = () => {
             value={form.password}
             onChange={handleChange}
             required
+            autoComplete="new-password"
             style={styles.input}
           />
           <button type="submit" style={styles.button}>Sign Up</button>

@@ -26,7 +26,7 @@ const Login = ({ setIsLoggedIn }) => {
       if (res.ok) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('userName', data.userName || 'User');
-        localStorage.setItem('userRole', 'User');
+        localStorage.setItem('userRole', data.userRole || 'User');
 
         alert('Login successful!');
         if (typeof setIsLoggedIn === 'function') {
@@ -34,11 +34,11 @@ const Login = ({ setIsLoggedIn }) => {
         }
         navigate('/app');
       } else {
-        alert(data.message || 'Login failed');
+        alert(data.message || 'Login failed. Please check your credentials.');
       }
     } catch (error) {
       console.error('Login error:', error);
-      alert('Something went wrong!');
+      alert('Network error! Please check if the backend is running and try again.');
     }
   };
 
@@ -55,6 +55,7 @@ const Login = ({ setIsLoggedIn }) => {
             value={form.email}
             onChange={handleChange}
             required
+            autoComplete="email"
             style={styles.input}
           />
           <input
@@ -64,6 +65,7 @@ const Login = ({ setIsLoggedIn }) => {
             value={form.password}
             onChange={handleChange}
             required
+            autoComplete="current-password"
             style={styles.input}
           />
           <button type="submit" style={styles.button}>Log In</button>
