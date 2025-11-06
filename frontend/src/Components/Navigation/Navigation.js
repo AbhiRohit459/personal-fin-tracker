@@ -117,10 +117,11 @@ import React from 'react';
 import styled from 'styled-components';
 import avatar from '../../img/avatar.png';
 import { menuItems } from '../../utils/menuItems';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function Navigation({ active, setActive }) {
     const navigate = useNavigate();
+    const location = useLocation();
 
     // Get userName and userRole from localStorage
     const userName = localStorage.getItem('userName') || 'John Doe'; // Default to 'John Doe' if not set
@@ -148,13 +149,13 @@ function Navigation({ active, setActive }) {
                         key={item.id}
                         onClick={() => {
                             setActive(item.id);
-                            // Only navigate if we're not already on /app route
-                            // When on /app, just update active state to change content
-                            if (window.location.hash !== '#/app') {
-                                navigate(item.link);
+                            // If we're on /app route, just update active state (content changes via displayData)
+                            // Otherwise, navigate to the specific route
+                            if (location.pathname === '/app' || location.hash === '#/app') {
+                                // Stay on /app, just update active state
+                                // The displayData function will show the correct component
                             } else {
-                                // If on /app, navigate to /app to refresh and show correct content
-                                navigate('/app');
+                                navigate(item.link);
                             }
                         }}
                         className={active === item.id ? 'active' : ''}
